@@ -555,6 +555,12 @@ public interface ASTListener extends GeneralASTListener {
   default void exitArraySpecifier(ArraySpecifier node) {
   }
 
+  default void enterPointerSpecifier(PointerSpecifier node) {
+  }
+
+  default void exitPointerSpecifier(PointerSpecifier node) {
+  }
+
   default void enterTypeReference(TypeReference node) {
   }
 

@@ -211,7 +211,9 @@ singleAttribute:
 		LPAREN content = expression RPAREN
 	)?;
 
-declarationMember: IDENTIFIER arraySpecifier? (ASSIGN_OP initializer)?;
+declarationMember: pointerSpecifier? IDENTIFIER arraySpecifier? (ASSIGN_OP initializer)?;
+
+pointerSpecifier: TIMES_OP+;
 
 fullySpecifiedType: typeQualifier? typeSpecifier;
 

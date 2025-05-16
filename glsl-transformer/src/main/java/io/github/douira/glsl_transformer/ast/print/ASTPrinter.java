@@ -964,6 +964,7 @@ public class ASTPrinter extends ASTPrinterBase {
 
   @Override
   public Void visitDeclarationMember(DeclarationMember node) {
+    visitSafe(node.getPointerSpecifier());
     visit(node.getName());
     visitSafe(node.getArraySpecifier());
     if (node.getInitializer() != null) {

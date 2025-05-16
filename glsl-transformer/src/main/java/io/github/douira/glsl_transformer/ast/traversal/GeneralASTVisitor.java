@@ -63,6 +63,15 @@ public interface GeneralASTVisitor<R> {
     return result;
   }
 
+  default R visitFourChildren(ASTNode first, ASTNode second, ASTNode third, ASTNode fourth) {
+    var result = initialResult();
+    result = visitSafe(result, first);
+    result = visitSafe(result, second);
+    result = visitSafe(result, third);
+    result = visitSafe(result, fourth);
+    return result;
+  }
+
   R initialResult();
 
   R superNodeTypeResult();

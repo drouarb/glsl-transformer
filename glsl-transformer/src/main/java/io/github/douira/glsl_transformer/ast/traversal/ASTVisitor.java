@@ -403,7 +403,7 @@ public interface ASTVisitor<R> extends GeneralASTVisitor<R> {
   }
 
   default R visitDeclarationMember(DeclarationMember node) {
-    return visitThreeChildren(node.getName(), node.getArraySpecifier(), node.getInitializer());
+    return visitFourChildren(node.getPointerSpecifier(), node.getName(), node.getArraySpecifier(), node.getInitializer());
   }
 
   default R visitFunctionDeclaration(FunctionDeclaration node) {
@@ -493,6 +493,10 @@ public interface ASTVisitor<R> extends GeneralASTVisitor<R> {
 
   default R visitArraySpecifier(ArraySpecifier node) {
     return visitChildren(node);
+  }
+
+  default R visitPointerSpecifier(PointerSpecifier node) {
+    return visit(node);
   }
 
   default R visitBuiltinFixedTypeSpecifier(BuiltinFixedTypeSpecifier node) {

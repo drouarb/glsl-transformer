@@ -685,6 +685,11 @@ public class ASTBuilder extends GLSLParserBaseVisitor<ASTNode> {
   }
 
   @Override
+  public PointerSpecifier visitPointerSpecifier(PointerSpecifierContext ctx) {
+    return new PointerSpecifier(ctx.TIMES_OP().size());
+  }
+
+  @Override
   public FunctionDefinition visitFunctionDefinition(FunctionDefinitionContext ctx) {
     var compoundStatementCtx = ctx.compoundStatement();
     var sourceLocation = readLineDirective(compoundStatementCtx);
@@ -706,10 +711,12 @@ public class ASTBuilder extends GLSLParserBaseVisitor<ASTNode> {
 
   @Override
   public DeclarationMember visitDeclarationMember(DeclarationMemberContext ctx) {
+    var pointerSpecifier = ctx.pointerSpecifier();
     var arraySpecifier = ctx.arraySpecifier();
     var name = visitIdentifier(ctx.IDENTIFIER());
     var initializer = ctx.initializer();
     return new DeclarationMember(
+        applySafe(pointerSpecifier, this::visitPointerSpecifier),
         name,
         applySafe(arraySpecifier, this::visitArraySpecifier),
         applySafe(initializer, this::visitInitializer));

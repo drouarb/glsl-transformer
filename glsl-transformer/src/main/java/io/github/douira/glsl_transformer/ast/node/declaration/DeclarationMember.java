@@ -4,6 +4,7 @@ import io.github.douira.glsl_transformer.ast.node.Identifier;
 import io.github.douira.glsl_transformer.ast.node.abstract_node.InnerASTNode;
 import io.github.douira.glsl_transformer.ast.node.type.initializer.Initializer;
 import io.github.douira.glsl_transformer.ast.node.type.specifier.ArraySpecifier;
+import io.github.douira.glsl_transformer.ast.node.type.specifier.PointerSpecifier;
 import io.github.douira.glsl_transformer.ast.query.Root;
 import io.github.douira.glsl_transformer.ast.traversal.*;
 
@@ -11,8 +12,10 @@ public class DeclarationMember extends InnerASTNode {
   protected Identifier name;
   protected ArraySpecifier arraySpecifier; // TODO: nullable
   protected Initializer initializer; // TODO: nullable
+  protected PointerSpecifier pointerSpecifier;
 
-  public DeclarationMember(Identifier name, ArraySpecifier arraySpecifier, Initializer initializer) {
+  public DeclarationMember(PointerSpecifier pointerSpecifier, Identifier name, ArraySpecifier arraySpecifier, Initializer initializer) {
+    this.pointerSpecifier = setup(pointerSpecifier, this::setPointerSpecifier);
     this.name = setup(name, this::setName);
     this.arraySpecifier = setup(arraySpecifier, this::setArraySpecifier);
     this.initializer = setup(initializer, this::setInitializer);
@@ -23,7 +26,8 @@ public class DeclarationMember extends InnerASTNode {
     this.initializer = setup(initializer, this::setInitializer);
   }
 
-  public DeclarationMember(Identifier name, ArraySpecifier arraySpecifier) {
+  public DeclarationMember(PointerSpecifier pointerSpecifier, Identifier name, ArraySpecifier arraySpecifier) {
+    this.pointerSpecifier = setup(pointerSpecifier, this::setPointerSpecifier);
     this.name = setup(name, this::setName);
     this.arraySpecifier = setup(arraySpecifier, this::setArraySpecifier);
   }
@@ -39,6 +43,15 @@ public class DeclarationMember extends InnerASTNode {
   public void setName(Identifier name) {
     updateParents(this.name, name, this::setName);
     this.name = name;
+  }
+
+  public PointerSpecifier getPointerSpecifier() {
+    return pointerSpecifier;
+  }
+
+  public void setPointerSpecifier(PointerSpecifier pointerSpecifier) {
+    updateParents(this.pointerSpecifier, pointerSpecifier, this::setPointerSpecifier);
+    this.pointerSpecifier = pointerSpecifier;
   }
 
   public ArraySpecifier getArraySpecifier() {
@@ -76,7 +89,7 @@ public class DeclarationMember extends InnerASTNode {
 
   @Override
   public DeclarationMember clone() {
-    return new DeclarationMember(clone(name), clone(arraySpecifier), clone(initializer));
+    return new DeclarationMember(clone(pointerSpecifier), clone(name), clone(arraySpecifier), clone(initializer));
   }
 
   @Override
